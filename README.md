@@ -1,4 +1,4 @@
-moire
-=====
+halftone
+========
 
-playing with moire patterns
+playing with moire patterns + halftones
