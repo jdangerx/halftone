@@ -1,47 +1,70 @@
-(function() {
-  function makeDiamond(attrs) {
-    var center = attrs.center;
-    var side = attrs.side;
-    var color = attrs.color || "black";
-    var corner = new Point(center.x - side/2, center.y - side/2);
-    var diamond = new Shape.Rectangle(corner, new Size(side, side));
-    diamond.rotation = 45;
-    // diamond.fillColor = color;
-    return diamond;
+var BLACK_SQUARE = "\u25A0";
+
+var makeRow = function(elt, width) {
+  var row = "";
+  var spacer = "<spacer class='spacer'> </spacer>";
+  for (var i = 0; i < width; i++) {
+    row += "<spacer class='spacer'>"+elt+"</spacer>";
   }
 
-  function grid(attrs) {
-    attrs = attrs || {};
-    rows = attrs.rows || 21;
-    cols = attrs.cols || 21;
-    size = attrs.size || 8;
-    spacing = attrs.spacing || 20;
-    color = attrs.color || "black";
-    opacity = attrs.opacity || 1.0;
+  row += "<br>";
+  return row;
+};
 
-    var grid = new Group();
 
-    for (var i = 1; i <= cols; i++) {
-      for (var j = 1; j <= rows; j++) {
-        grid.addChild(makeDiamond({center: new Point(i*spacing, j*spacing),
-                                   side: size,
-                                   opacity: opacity}));
-      }
-    }
-    grid.fillColor = color;
-    grid.opacity = opacity;
-    grid.blendMode = "multiply";
-    grid.position = view.center;
-    return grid;
+var setXSpace = function(grid, width) {
+  var spacers = grid.getElementsByClassName("spacer");
+  for (var i = 0; i < spacers.length; i++) {
+    spacers[i].style.width = width;
+    spacers[i].style.display = "inline-block";
   }
+};
 
-  C = grid({color: "cyan"});
-  C.rotation = 30;
-  Y = grid({color: "yellow"});
-  Y.rotation = 15;
-  M = grid({color: "magenta"});
-  M.rotation = 60;
-  K = grid();
-  // var d = makeDiamond({center: new Point(10, 10), side: 14});
-  // d.fillColor = "black";
-})();
+
+var setYSpace = function(grid, height) {
+  grid.style["line-height"] = height;
+};
+
+
+var makeGrid = function(elt, x, y, xSpace, ySpace) {
+  var container = document.createElement("div");
+  container.style.position = "absolute";
+  container.style.left = "0px";
+  container.style.top = "0px";
+  container.style.width = "100%";
+  var grid = document.createElement("div");
+  for (var i = 0; i < y; i++) {
+    grid.innerHTML += makeRow(elt, x);
+  }
+  setXSpace(grid, xSpace);
+  setYSpace(grid, ySpace);
+  // grid.style.float = "left";
+  grid.style.opacity = "0.5";
+  grid.style["text-align"] = "center";
+  container.appendChild(grid);
+  return container;
+};
+
+
+magentaGrid = makeGrid(BLACK_SQUARE, 21, 21, "2em", "2em");
+magentaGrid.id = "magenta";
+magentaGrid.style.color = "magenta";
+magentaGrid.style.transform = "rotate(120deg)";
+document.body.appendChild(magentaGrid);
+
+blackGrid = makeGrid(BLACK_SQUARE, 21, 21, "2em", "2em");
+blackGrid.id = "black";
+blackGrid.style.color = "black";
+document.body.appendChild(blackGrid);
+
+cyanGrid = makeGrid(BLACK_SQUARE, 21, 21, "2em", "2em");
+cyanGrid.id = "cyan";
+cyanGrid.style.color = "cyan";
+cyanGrid.style.transform = "rotate(60deg)";
+document.body.appendChild(cyanGrid);
+
+yellowGrid = makeGrid(BLACK_SQUARE, 21, 21, "2em", "2em");
+yellowGrid.id = "yellow";
+yellowGrid.style.color = "yellow";
+yellowGrid.style.transform = "rotate(15deg)";
+document.body.appendChild(yellowGrid);
