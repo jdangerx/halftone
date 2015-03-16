@@ -1,15 +1,17 @@
 var BLACK_SQUARE = "\u25A0";
 
-function Grid(color, elt, x, y, xSpace, ySpace, initRotation) {
+function Grid(color, elt, x, y, xspace, yspace, initRotation) {
   this.color = color;
   this.elt = elt;
   this.rotation = initRotation;
+  this.xspace = xspace;
+  this.yspace = yspace;
 
   this.container = document.createElement("div");
   this.container.class = "container";
   this.container.id = color;
   this.container.style.color = color;
-  this.container.style["font-size"] = (window.innerHeight / (y * ySpace)) + "px";
+  this.container.style["font-size"] = (window.innerHeight / (y * yspace)) + "px";
   this.container.style.position = "absolute";
   this.container.style.left = "0px";
   this.container.style.top = "0px";
@@ -22,8 +24,8 @@ function Grid(color, elt, x, y, xSpace, ySpace, initRotation) {
   for (var i = 0; i < y; i++) {
     this.grid.innerHTML += this.makeRow(x);
   }
-  this.setXSpace(xSpace);
-  this.setYSpace(ySpace);
+  this.setXSpace();
+  this.setYSpace();
   this.grid.style.opacity = "0.7";
   this.grid.style["text-align"] = "center";
 
@@ -32,16 +34,16 @@ function Grid(color, elt, x, y, xSpace, ySpace, initRotation) {
 }
 
 Grid.prototype = {
-  setXSpace: function(width) {
+  setXSpace: function() {
     var spacers = this.grid.getElementsByClassName("spacer");
     for (var i = 0; i < spacers.length; i++) {
-      spacers[i].style.width = width + "em";
+      spacers[i].style.width = this.xspace + "em";
       spacers[i].style.display = "inline-block";
     }
   },
 
-  setYSpace: function(height) {
-    this.grid.style["line-height"] = height + "em";
+  setYSpace: function() {
+    this.grid.style["line-height"] = this.yspace + "em";
   },
 
   makeRow: function(width) {
