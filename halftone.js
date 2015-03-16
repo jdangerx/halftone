@@ -9,25 +9,29 @@ function Grid(color, elt, x, y, xspace, yspace, initRotation) {
 
   this.container = document.createElement("div");
   this.container.class = "container";
+  this.grid = document.createElement("div");
+  this.grid.class = "grid";
+
   this.container.id = color;
   this.container.style.color = color;
-  this.container.style["font-size"] = (window.innerHeight / (y * yspace)) + "px";
+  this.grid.style.opacity = "0.7";
+
+  // CSS to get things properly centered
   this.container.style.position = "absolute";
   this.container.style.left = "0px";
   this.container.style.top = "0px";
   this.container.style.width = "100%";
   this.container.style.height = "100%";
   this.container.style.clip = "rect(0px, "+window.innerWidth+"px, "+window.innerHeight+"px, 0px)";
+  this.grid.style["text-align"] = "center";
+  this.container.style["font-size"] = (window.innerHeight / (y * yspace)) + "px";
 
-  this.grid = document.createElement("div");
-  this.grid.class = "grid";
+  // populate the grid
   for (var i = 0; i < y; i++) {
     this.grid.innerHTML += this.makeRow(x);
   }
   this.setXSpace();
   this.setYSpace();
-  this.grid.style.opacity = "0.7";
-  this.grid.style["text-align"] = "center";
 
   this.container.appendChild(this.grid);
   document.body.appendChild(this.container);
@@ -74,10 +78,10 @@ var initRotations = {
 var grids = colors.map(function(color) {
   var grid = new Grid(color,
                       BLACK_SQUARE,
-                      8,
                       24,
-                      1.2,
-                      1.2,
+                      24,
+                      1.4,
+                      1.4,
                       initRotations[color]);
   return grid;
 });
