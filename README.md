@@ -1,4 +1,4 @@
 halftone
 ========
 
-playing with moire patterns + halftones
+playing with moire patterns + halftones!
