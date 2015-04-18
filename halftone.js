@@ -4,6 +4,7 @@ function Grid(color, elt, x, y, xspace, yspace, initRotation) {
   this.color = color;
   this.elt = elt;
   this.rotation = initRotation;
+  this.rotvel = 5;
   this.xspace = xspace;
   this.yspace = yspace;
 
@@ -88,10 +89,27 @@ var grids = colors.map(function(color) {
 
 var update = function() {
   grids.forEach(function(grid, i) {
-    grid.rotation += (i + 5) / 30;
+    grid.rotation += grid.rotvel / 30;
     grid.update();
   });
   window.requestAnimationFrame(update);
+};
+
+document.onkeypress = function(e) {
+  console.log(e.charCode);
+  var charPressed = String.fromCharCode(e.charCode);
+
+  var charsToGrids = {"a": grids[0],
+                      "s": grids[1],
+                      "d": grids[2],
+                      "f": grids[3]};
+
+  function isUpperCase(c) {
+    return c === c.toUpperCase();
+  }
+
+  var activeGrid = charsToGrids[charPressed.toLowerCase()];
+  activeGrid.rotvel += isUpperCase(charPressed) ? -1 : 1;
 };
 
 update();
